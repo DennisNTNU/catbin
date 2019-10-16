@@ -1,3 +1,3 @@
 all : 
 	mkdir -p build
-	gcc main.c -o build/catbin -Wall
+	gcc src/main.c -o build/catbin -Wall
