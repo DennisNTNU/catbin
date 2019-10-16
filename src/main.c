@@ -77,6 +77,14 @@ int main (int argc, char** argv)
 	return 0;
 }
 
+unsigned char endiannessTerm(unsigned char endianness, int k, unsigned int bytesInWord)
+{
+	if (endianness) // little endian
+		return (bytesInWord - 1 - k)*endianness;
+	else // big endian
+		return k;
+}
+
 void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCount, unsigned char endianness)
 {
 
@@ -98,7 +106,7 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 			printf(" ");
 			for (int k = 0; k < bytesInWord; k++)
 			{
-				unsigned int index = line*bytesInLine + word*bytesInWord + 3 - k;
+				unsigned int index = line*bytesInLine + word*bytesInWord + endiannessTerm(endianness, k, bytesInWord);
 				printf("%.2x ", buffer[index]);
 			}
 		}
@@ -108,7 +116,7 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 		{
 			for (int k = 0; k < bytesInWord; k++)
 			{
-				unsigned int index = line*bytesInLine + word*bytesInWord + 3 - k;
+				unsigned int index = line*bytesInLine + word*bytesInWord + endiannessTerm(endianness, k, bytesInWord);
 				printf("%c", makePrintable(buffer[index]));
 			}
 		}		
@@ -125,14 +133,14 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 			printf(" ");
 			for (int k = 0; k < bytesInWord; k++)
 			{
-				unsigned int index = lines*bytesInLine + word*bytesInWord + 3 - k;
+				unsigned int index = lines*bytesInLine + word*bytesInWord + endiannessTerm(endianness, k, bytesInWord);
 				printf("%.2x ", buffer[index]);
 			}
 		}
 		printf(" ");
 		for (int k = 0; k < restBytes; k++)
 		{
-			unsigned int index = lines*bytesInLine + word*bytesInWord + 3 - k;
+			unsigned int index = lines*bytesInLine + word*bytesInWord + endiannessTerm(endianness, k, bytesInWord);
 			printf("%.2x ", buffer[index]);
 		}
 	}
