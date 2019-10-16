@@ -18,4 +18,14 @@ does the same except prints in little-endian format.
 
 ```$ catbin <file path> -c <columns>```
 
-changes the number of four Byte wide columns to <columns>
+changes the number of four Byte wide columns to `<columns>`
+
+### Install
+
+Navigate inside the repository folder and compile the code with 
+
+```$ make```
+
+Optionally copy the executable to your current user's bin folder `~.local/bin` by
+
+```$ make install```
