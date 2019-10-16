@@ -4,21 +4,16 @@
 #include <unistd.h>	// for read(), close()
 
 
-// options:
-//	-h for help
-//	-c XX for column count of print out
-//  -l print little endian, instead of big endian
-
 void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCount, unsigned char endianness);
 char makePrintable(char byte);
+unsigned char endiannessTerm(unsigned char endianness, int k, unsigned int bytesInWord);
 
 int main (int argc, char** argv)
 {
-
 	if (argc < 2) return printf("No files given\n") - 1;
 
 	unsigned char colCount = 3;
-	unsigned char endianness = 0; // 0 little endian
+	unsigned char endianness = 0; // 0 := big endian
 
 	char* filepath = NULL;
 	for (int i = 1; i < argc; i++)
@@ -30,12 +25,18 @@ int main (int argc, char** argv)
 			{
 			case 'h':
 				// print help
+				printf("options:\n\t-h for help\n\t-c XX for column count of print out\n\t-l print little endian, instead of big endian\n");
 				return 0;
 				break;
 			case 'c':
 				if (i+1 < argc)
 				{
 					colCount = atoi(argv[++i]);
+					//printf("\n\nDebug: %i\n\n", colCount);
+					if (colCount == 0)
+					{
+						return printf("Invalid Column Count\n") - 2;
+					}
 				}
 				break;
 			case 'l':
@@ -51,23 +52,23 @@ int main (int argc, char** argv)
 		}
 	}
 
-	if (filepath == NULL) return printf("No files given\n") - 2;
+	if (filepath == NULL) return printf("No files given\n") - 3;
 
 	int fd = open(filepath, O_RDONLY);
-	if (fd < 0) return printf("Could not open file\n") - 3;
+	if (fd < 0) return printf("Could not open file\n") - 4;
 
 	unsigned int size = lseek(fd, 0, SEEK_END);
 	lseek(fd, 0, SEEK_SET);
 
-	printf("Size: %i | Column Count: %i | ", size, colCount);
+	printf("Size: %iB | Column Count: %i | ", size, colCount);
 	if (endianness)
 		printf("Little Endian\n");
 	else
 		printf("Big Endian\n");
 
-	if (size > 99999) return printf("file too large!\n") - 4;
+	if (size > 99999) return printf("file too large!\n") - 5;
 
-	unsigned char buffer[2048] = {0}; //Bug: buffer smaller than possible filesize TODO: fix this bug
+	unsigned char buffer[99999] = {0};
 	read(fd, buffer, size);
 	close(fd);
 
@@ -75,14 +76,6 @@ int main (int argc, char** argv)
 	printHex(buffer, size, colCount, endianness);
 
 	return 0;
-}
-
-unsigned char endiannessTerm(unsigned char endianness, int k, unsigned int bytesInWord)
-{
-	if (endianness) // little endian
-		return (bytesInWord - 1 - k)*endianness;
-	else // big endian
-		return k;
 }
 
 void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCount, unsigned char endianness)
@@ -154,4 +147,12 @@ char makePrintable(char byte)
 		return 46;
 	}
 	return byte;
+}
+
+unsigned char endiannessTerm(unsigned char endianness, int k, unsigned int bytesInWord)
+{
+	if (endianness) // little endian
+		return (bytesInWord - 1 - k)*endianness;
+	else // big endian
+		return k;
 }
