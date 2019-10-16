@@ -89,11 +89,11 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 	const unsigned int lines = size / bytesInLine;
 
 	const unsigned int restWords = (size - lines * bytesInLine) / bytesInWord;
-	const unsigned int restBytes = size - lines * bytesInLine - restWords*bytesInWord;
+	const unsigned int restBytes = size - lines * bytesInLine - restWords * bytesInWord;
 
 	for (int line = 0; line < lines; line++)
 	{
-		printf("\n%i\t0x%.8x:  ", line*bytesInLine, line*bytesInLine);
+		printf("\n%i\t0x%.6x:  ", line*bytesInLine, line*bytesInLine);
 		for (int word = 0; word < wordsInLine; word++)
 		{
 			printf(" ");
@@ -119,7 +119,7 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 
 	if (restWords | restBytes)
 	{
-		printf("\n%i\t0x%.8x:  ", lines*bytesInLine, lines*bytesInLine);
+		printf("\n%i\t0x%.6x:  ", lines*bytesInLine, lines*bytesInLine);
 		int word;
 		for (word = 0; word < restWords; word++)
 		{
@@ -130,6 +130,7 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 				printf("%.2x ", buffer[index]);
 			}
 		}
+
 		printf(" ");
 		for (int k = 0; k < restBytes; k++)
 		{
