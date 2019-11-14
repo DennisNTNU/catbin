@@ -1,6 +1,6 @@
-# catbin
+# hexdumb
 
-A small command line program to print the contents of a file in a hexadecimal format to the console.
+A small command line program to print the contents of a file in a hexadecimal format to the console. My own implementation of hexdump.
 
 ### Features
 
@@ -8,15 +8,15 @@ Choose whether the file should be printed in big-endian (Most significan Byte fi
 
 ### Examples
 
-```$ catbin <file path>```
+```$ hexdumb <file path>```
 
 prints the file given by `<file path>` in big-endian format in 3 four Byte wide columns.
 
-```$ catbin -l <file path>```
+```$ hexdumb -l <file path>```
 
 does the same except prints in little-endian format.
 
-```$ catbin <file path> -c <columns>```
+```$ hexdumb <file path> -c <columns>```
 
 changes the number of four Byte wide columns to `<columns>`
 

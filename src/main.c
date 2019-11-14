@@ -72,7 +72,7 @@ int main (int argc, char** argv)
 	read(fd, buffer, size);
 	close(fd);
 
-	
+
 	printHex(buffer, size, colCount, endianness);
 
 	return 0;
@@ -112,7 +112,7 @@ void printHex(unsigned char* buffer, unsigned int size, unsigned char columnCoun
 				unsigned int index = line*bytesInLine + word*bytesInWord + endiannessTerm(endianness, k, bytesInWord);
 				printf("%c", makePrintable(buffer[index]));
 			}
-		}		
+		}
 	}
 
 	//printf("restBytes: %i\n", restBytes);
